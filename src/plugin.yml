@@ -1,0 +1,6 @@
+name: J2MC_ResSlots
+main: to.joe.j2mc.resslots.J2MC_ReservedSlots
+version: 0.0prealpha
+website: http://forums.joe.to
+author: J2 Minecraft Plugin Team
+description: Reserved slots module
