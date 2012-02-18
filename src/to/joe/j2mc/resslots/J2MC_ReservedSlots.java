@@ -27,12 +27,12 @@ public class J2MC_ReservedSlots extends JavaPlugin implements Listener{
 		boolean isDonator = J2MC_Manager.getPermissions().hasFlag(event.getName(), 'd');
 		if(this.getServer().getOnlinePlayers().length >= this.getServer().getMaxPlayers()){
 			if(!isAdmin && !isDonator){
-				event.disallow(Result.KICK_OTHER, "Server full. Donators get a reserved slot. Donate at donate.joe.to");
+				event.disallow(Result.KICK_OTHER, "Server full! For a reserved slot see donate.joe.to");
 			}else{
 				if((this.getServer().getMaxPlayers() + 10) >= this.getServer().getOnlinePlayers().length){
 					for(Player plr : this.getServer().getOnlinePlayers()){
 						if(!J2MC_Manager.getPermissions().isAdmin(plr.getName()) || !J2MC_Manager.getPermissions().hasFlag(plr.getName(), 'd')){
-							plr.kickPlayer("Making room for admin or donator");
+							plr.kickPlayer("Player with reserved slot joined, see donate.joe.to");
 							break;
 						}
 					}
