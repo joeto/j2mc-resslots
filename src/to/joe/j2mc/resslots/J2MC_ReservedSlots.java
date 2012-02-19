@@ -1,6 +1,5 @@
 package to.joe.j2mc.resslots;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -12,9 +11,12 @@ import to.joe.j2mc.core.J2MC_Manager;
 
 public class J2MC_ReservedSlots extends JavaPlugin implements Listener {
 
+    private int softLimit;
+
     @Override
     public void onEnable() {
         this.getServer().getPluginManager().registerEvents(this, this);
+        this.softLimit=this.getConfig().getInt("softlimit",30);
         this.getLogger().info("Reserved slots module enabled");
     }
 
@@ -25,25 +27,12 @@ public class J2MC_ReservedSlots extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(PlayerPreLoginEvent event) {
-        final boolean isAdmin = J2MC_Manager.getPermissions().isAdmin(event.getName());
-        final boolean isDonator = J2MC_Manager.getPermissions().hasFlag(event.getName(), 'd');
-        if (this.getServer().getOnlinePlayers().length >= this.getServer().getMaxPlayers()) {
+        if (this.getServer().getOnlinePlayers().length >= this.softLimit) {
+            final boolean isAdmin = J2MC_Manager.getPermissions().isAdmin(event.getName());
+            final boolean isDonator = J2MC_Manager.getPermissions().hasFlag(event.getName(), 'd');
             if (!isAdmin && !isDonator) {
                 event.disallow(Result.KICK_OTHER, "Server full! For a reserved slot see donate.joe.to");
-            } else {
-                if ((this.getServer().getMaxPlayers() + 10) >= this.getServer().getOnlinePlayers().length) {
-                    for (final Player plr : this.getServer().getOnlinePlayers()) {
-                        if (!J2MC_Manager.getPermissions().isAdmin(plr.getName()) || !J2MC_Manager.getPermissions().hasFlag(plr.getName(), 'd')) {
-                            plr.kickPlayer("Player with reserved slot joined, see donate.joe.to");
-                            break;
-                        }
-                    }
-                    event.allow();
-                } else {
-                    event.allow();
-                }
-            }
+            } 
         }
     }
-
 }
