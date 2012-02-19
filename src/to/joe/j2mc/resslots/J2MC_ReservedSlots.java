@@ -14,15 +14,15 @@ public class J2MC_ReservedSlots extends JavaPlugin implements Listener {
     private int softLimit;
 
     @Override
-    public void onEnable() {
-        this.getServer().getPluginManager().registerEvents(this, this);
-        this.softLimit=this.getConfig().getInt("softlimit",30);
-        this.getLogger().info("Reserved slots module enabled");
+    public void onDisable() {
+        this.getLogger().info("Reserved slots module disabled");
     }
 
     @Override
-    public void onDisable() {
-        this.getLogger().info("Reserved slots module disabled");
+    public void onEnable() {
+        this.getServer().getPluginManager().registerEvents(this, this);
+        this.softLimit = this.getConfig().getInt("softlimit", 30);
+        this.getLogger().info("Reserved slots module enabled");
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -32,7 +32,7 @@ public class J2MC_ReservedSlots extends JavaPlugin implements Listener {
             final boolean isDonator = J2MC_Manager.getPermissions().hasFlag(event.getName(), 'd');
             if (!isAdmin && !isDonator) {
                 event.disallow(Result.KICK_OTHER, "Server full! For a reserved slot see donate.joe.to");
-            } 
+            }
         }
     }
 }
