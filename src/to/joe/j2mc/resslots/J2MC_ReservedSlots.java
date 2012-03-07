@@ -31,9 +31,11 @@ public class J2MC_ReservedSlots extends JavaPlugin implements Listener {
             if (!isAdmin && !isDonator) {
                 event.disallow(Result.KICK_FULL, ChatColor.RED + "Server full!" + ChatColor.WHITE + " For a reserved slot see donate.joe.to");
             } else {
-                event.setResult(Result.ALLOWED);
-                event.allow();
-                this.getLogger().info("Allowed player " + event.getPlayer().getName() + " through");
+                if (event.getResult() == Result.KICK_FULL) {
+                    event.setResult(Result.ALLOWED);
+                    event.allow();
+                    this.getLogger().info("Allowed player " + event.getPlayer().getName() + " through");
+                }
             }
         }
     }
