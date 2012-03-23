@@ -8,8 +8,6 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import to.joe.j2mc.core.J2MC_Manager;
-
 public class J2MC_ReservedSlots extends JavaPlugin implements Listener {
 
     @Override
@@ -24,11 +22,9 @@ public class J2MC_ReservedSlots extends JavaPlugin implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerPreLogin(PlayerLoginEvent event) {
+    public void onPlayerLogin(PlayerLoginEvent event) {
         if (this.getServer().getOnlinePlayers().length >= this.getServer().getMaxPlayers()) {
-            final boolean isAdmin = J2MC_Manager.getPermissions().isAdmin(event.getPlayer().getName());
-            final boolean isDonator = J2MC_Manager.getPermissions().hasFlag(event.getPlayer().getName(), 'd');
-            if (!isAdmin && !isDonator) {
+            if (!event.getPlayer().hasPermission("j2mc.resslots.resslot")) {
                 event.disallow(Result.KICK_FULL, ChatColor.RED + "Server full!" + ChatColor.WHITE + " For a reserved slot see donate.joe.to");
             } else {
                 if (event.getResult() == Result.KICK_FULL) {
